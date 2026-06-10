@@ -1,0 +1,16 @@
+version: 0.2
+ 
+phases:
+  install:
+    commands:
+      - echo "install phase"
+ 
+  build:
+    commands:
+      - echo "build phase"
+      - aws s3 sync . s3://$DEPLOY_BUCKET --delete
+      - aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
+ 
+artifacts:
+  files:
+    - '**/*'
